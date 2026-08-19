@@ -110,28 +110,44 @@ def validate_manifest(data: dict[str, Any], errors: list[str]) -> None:
             errors.append("projection_policy.requires_exact_source_commit must be true")
         if projection.get("allows_floating_main") is not False:
             errors.append("projection_policy.allows_floating_main must be false")
-        if projection.get("allows_duplicate_case_prose") is not False:
-            errors.append("projection_policy.allows_duplicate_case_prose must be false")
+        if projection.get("allows_duplicate_full_case_prose") is not False:
+            errors.append("projection_policy.allows_duplicate_full_case_prose must be false")
 
     views = data.get("views")
+    view_case_refs: list[tuple[str, str, str]] = []
     if not isinstance(views, list) or not views:
         errors.append("views must be a non-empty list")
     else:
         view_ids: set[str] = set()
         for index, view in enumerate(views):
+            prefix = f"views[{index}]"
             if not isinstance(view, dict):
-                errors.append(f"views[{index}] must be an object")
+                errors.append(f"{prefix} must be an object")
                 continue
+
             view_id = view.get("id")
             if not isinstance(view_id, str) or not view_id:
-                errors.append(f"views[{index}].id is required")
+                errors.append(f"{prefix}.id is required")
+                view_id = prefix
             elif view_id in view_ids:
                 errors.append(f"duplicate view id: {view_id}")
             else:
                 view_ids.add(view_id)
+
             file_name = view.get("file")
             if not isinstance(file_name, str) or not (ROOT / file_name).is_file():
                 errors.append(f"view file missing: {file_name!r}")
+
+            for field in ("primary_cases", "supporting_cases"):
+                values = view.get(field)
+                if not isinstance(values, list):
+                    errors.append(f"{prefix}.{field} must be a list")
+                    continue
+                for value in values:
+                    if not isinstance(value, str) or not value:
+                        errors.append(f"{prefix}.{field} contains an invalid case id")
+                    else:
+                        view_case_refs.append((str(view_id), field, value))
 
     cases = data.get("cases")
     if not isinstance(cases, list) or not cases:
@@ -226,6 +242,10 @@ def validate_manifest(data: dict[str, Any], errors: list[str]) -> None:
 
     if orders and orders != set(range(1, len(cases) + 1)):
         errors.append("case orders must be contiguous from 1")
+
+    for view_id, field, case_id in view_case_refs:
+        if case_id not in ids:
+            errors.append(f"view {view_id}.{field} references unknown case id: {case_id}")
 
 
 def normalize_link_target(raw: str) -> str:
