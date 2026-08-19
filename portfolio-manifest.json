@@ -6,8 +6,8 @@
   "projection_policy": {
     "requires_exact_source_commit": true,
     "allows_floating_main": false,
-    "allows_duplicate_case_prose": false,
-    "provenance_contract": "docs/PROJECTION-CONTRACT.md"
+    "provenance_contract": "docs/PROJECTION-CONTRACT.md",
+    "allows_duplicate_full_case_prose": false
   },
   "views": [
     {
