@@ -79,10 +79,12 @@ Agent가 test skip, fail, not_run을 충분히 보고하지 않는 문제를 경
 ```text
 Problem / Scope
 → AI-assisted analysis / implementation
-→ Static / Test / CI
+→ Static check / Playwright E2E / execution result
 → Independent review
 → Human acceptance
 ```
+
+회사 실무의 모든 단계가 CI에서 자동 강제됐다고 주장하지 않습니다. CI 기반 검증은 아래 공개 engineering repository의 별도 evidence로 구분합니다.
 
 ## External API boundary
 
