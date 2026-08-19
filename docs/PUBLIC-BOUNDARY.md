@@ -5,7 +5,7 @@
 - sanitized problem definition
 - TOM의 역할과 판단
 - AI의 보조 범위
-- 테스트·CI·검증 방식
+- 테스트·E2E·CI 등 확인 가능한 검증 방식
 - 확인된 제한사항
 - 공개 저장소·PR·CI 링크
 - synthetic diagram
@@ -20,7 +20,7 @@
 - 상세 운영 로그
 - 보호 이력서 원천
 - 검증되지 않은 생산성·시간·비용·정확도 수치
-- `dna_project` 관련 career evidence
+- 이력서·포트폴리오 근거에서 제외하기로 한 내부 자산
 
 ## Claim precedence
 
