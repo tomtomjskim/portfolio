@@ -67,10 +67,12 @@ Agent가 테스트를 skip하거나 fail/not_run 상태를 충분히 보고하�
 ```text
 Problem / Scope
 → AI-assisted work
-→ Static / Test / CI
+→ Static check / Playwright E2E / execution result
 → Independent review
 → Human acceptance
 ```
+
+공개 R&D 저장소에서는 별도로 CI와 자동 검증 근거를 확인합니다. 회사 실무의 모든 단계가 CI에서 자동 강제됐다는 의미는 아닙니다.
 
 UI/UX와 실제 사용자 동선, 운영 영향처럼 자동화만으로 판단하기 어려운 항목은 사람이 직접 확인합니다.
 
@@ -83,4 +85,4 @@ UI/UX와 실제 사용자 동선, 운영 영향처럼 자동화만으로 판단�
 - [stackforge-atlas](https://github.com/tomtomjskim/stackforge-atlas)
 - [claude-code-guide](https://github.com/tomtomjskim/claude-code-guide) — selective supporting evidence
 
-Representative hold status is tracked separately in [EVIDENCE.md](EVIDENCE.md).
+공개 evidence의 검증 범위와 한계는 [EVIDENCE.md](EVIDENCE.md)에서 확인할 수 있습니다.
