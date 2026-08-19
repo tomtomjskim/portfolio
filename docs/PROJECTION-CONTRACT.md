@@ -1,58 +1,45 @@
-# Portfolio Projection Contract
+# 웹사이트 반영 기준
 
-## Roles
+## 저장소 역할
 
 ```text
 tomtomjskim/portfolio
-= canonical public Case and Evidence source
+= 공개 사례와 근거의 원문
 
 tomtomjskim/tomtomjskim
-= GitHub Profile entrypoint
+= GitHub 프로필 진입점
 
 tomtomjskim/tomtomjskim.github.io
-= visual presentation layer
+= 화면 구성과 정적 웹사이트
 ```
 
-Web은 이 저장소의 내용을 보여주는 downstream projection이며 경력 사실·Claim·Case 원문을 새로 소유할 수 없습니다.
+GitHub Pages는 이 저장소의 내용을 읽어 보여주는 화면 계층입니다. 새로운 경력 사실이나 사례 문장을 따로 관리하지 않습니다.
 
-## Source selection
-
-GitHub Pages build는 floating `main`을 바로 사용하지 않습니다.
+## 단순한 반영 원칙
 
 ```text
-portfolio repository
-+ exact source commit SHA
-+ site build commit SHA
-+ generated-at timestamp
+portfolio/main
+→ 내용 검증
+→ 정적 사이트 빌드
+→ GitHub Pages 배포
 ```
 
-사이트 저장소의 source manifest 예시:
+별도의 commit SHA 고정 파일이나 이중 이력 관리는 사용하지 않습니다. 변경 내역과 되돌리기는 각 저장소의 Git 이력과 PR로 관리합니다.
 
-```json
-{
-  "source_repository": "tomtomjskim/portfolio",
-  "source_commit": "<40-character commit SHA>",
-  "site_commit": "<40-character commit SHA>",
-  "generated_at": "<ISO 8601 timestamp>"
-}
-```
+## 내용 관리 위치
 
-source commit 변경은 별도 PR로 검수합니다.
-
-## Content ownership
-
-| Content | Owner |
+| 내용 | 관리 위치 |
 |---|---|
-| Case order and 15-second card metadata | `portfolio-manifest.json` |
-| Full Case prose | `cases/*.md` |
-| Backend / AX selection views | `PORTFOLIO.md`, `PORTFOLIO-AX.md` |
-| Evidence state and limitations | `EVIDENCE.md` |
-| Public/private policy | `docs/PUBLIC-BOUNDARY.md` |
-| Visual components, layout, route rendering | user-site repository |
+| 사례 순서와 요약 문장 | `portfolio-manifest.json` |
+| 전체 사례 원문 | `cases/*.md` |
+| 백엔드·AI 활용 관점별 선택 | `PORTFOLIO.md`, `PORTFOLIO-AX.md` |
+| 근거 상태와 한계 | `EVIDENCE.md` |
+| 공개·비공개 기준 | `docs/PUBLIC-BOUNDARY.md` |
+| 화면 구성·스타일·경로 | GitHub Pages 저장소 |
 
-Site repository에서 Case 문장을 수동 복제해 유지하지 않습니다.
+웹사이트 저장소에서 전체 사례 문장을 복사해 별도로 유지하지 않습니다.
 
-## Initial route contract
+## 초기 경로
 
 ```text
 /
@@ -63,39 +50,35 @@ Site repository에서 Case 문장을 수동 복제해 유지하지 않습니다.
 /about
 ```
 
-초기 release에서는 public-safe reviewed resume가 없으므로 `/resume`를 만들지 않습니다.
+공개 가능한 검토 완료 이력서가 없으므로 초기 버전에는 `/resume`을 만들지 않습니다.
 
-## Build contract
+## 빌드 흐름
 
 ```text
-checkout site
-→ checkout portfolio at exact commit
-→ validate portfolio manifest and Markdown
-→ render static pages
-→ generate provenance manifest
-→ static export
-→ deploy GitHub Pages
+사이트 저장소 받기
+→ portfolio/main 내용 받기
+→ manifest와 Markdown 검증
+→ 정적 페이지 생성
+→ GitHub Pages 배포
 ```
 
-## Required QA
+## 필수 점검
 
-- desktop and mobile rendering
-- keyboard navigation and visible focus
-- semantic headings
-- contrast
-- no horizontal overflow
-- 404 route
-- favicon / OpenGraph / sitemap / robots
-- broken-link check
-- static export
-- visible source provenance
-- public/private boundary scan
+- 데스크톱·모바일 화면
+- 키보드 이동과 포커스 표시
+- 제목 구조
+- 글자 대비
+- 가로 넘침 없음
+- 404 화면
+- 파비콘·공유 미리보기·사이트맵·robots
+- 링크 확인
+- 정적 빌드
+- 공개 범위 검사
 
-## Prohibited
+## 금지 사항
 
-- Web에서 새로운 Career Fact·Claim 생성
-- `portfolio/main`을 검수 없이 자동 배포
-- Case prose의 독립 복사본 유지
-- public R&D를 employer production으로 재서술
-- private repository·path·customer data·credential 노출
-- 검증되지 않은 production metric·adoption·SLA 추가
+- 웹사이트에서 새로운 경력 사실·주장 생성
+- 사례 원문의 독립 복사본 유지
+- 공개 연구·개발 자료를 이전 회사의 운영 업무로 재서술
+- 비공개 저장소·경로·고객 데이터·credential 노출
+- 검증되지 않은 운영 수치·외부 채택·SLA 추가
