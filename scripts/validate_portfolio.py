@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the public portfolio source contract with the Python standard library."""
+"""공개 포트폴리오의 문서 구조, 링크, 공개 범위를 검사한다."""
 
 from __future__ import annotations
 
@@ -24,18 +24,18 @@ REQUIRED_FILES = {
 }
 
 REQUIRED_CASE_HEADINGS = [
-    "## Question",
-    "## At a glance",
-    "## Problem",
-    "## Context / constraints",
-    "## Investigation",
-    "## Decision",
-    "## Trade-off",
-    "## Implementation",
-    "## Verification / actual use",
-    "## Limitations",
-    "## Evidence",
-    "## Interview hooks",
+    "## 핵심 질문",
+    "## 한눈에 보기",
+    "## 문제",
+    "## 업무 환경과 제약",
+    "## 확인 과정",
+    "## 판단",
+    "## 선택 기준과 대안",
+    "## 구현",
+    "## 검증과 실제 사용",
+    "## 한계",
+    "## 근거",
+    "## 면접 예상 질문",
 ]
 
 ALLOWED_CLASSIFICATIONS = {
@@ -65,25 +65,26 @@ MARKDOWN_LINK_RE = re.compile(r"\[[^\]\n]+\]\(([^)\n]+)\)")
 
 
 def fail(errors: list[str]) -> None:
-    if errors:
-        print("Portfolio validation failed:", file=sys.stderr)
-        for error in errors:
-            print(f"- {error}", file=sys.stderr)
-        raise SystemExit(1)
+    if not errors:
+        return
+    print("포트폴리오 검증 실패:", file=sys.stderr)
+    for error in errors:
+        print(f"- {error}", file=sys.stderr)
+    raise SystemExit(1)
 
 
 def load_manifest(errors: list[str]) -> dict[str, Any]:
     try:
         data = json.loads(MANIFEST.read_text(encoding="utf-8"))
     except FileNotFoundError:
-        errors.append("portfolio-manifest.json is missing")
+        errors.append("portfolio-manifest.json 파일이 없음")
         return {}
     except json.JSONDecodeError as exc:
-        errors.append(f"portfolio-manifest.json is invalid JSON: {exc}")
+        errors.append(f"portfolio-manifest.json JSON 오류: {exc}")
         return {}
 
     if not isinstance(data, dict):
-        errors.append("portfolio-manifest.json must be an object")
+        errors.append("portfolio-manifest.json 최상위 값은 객체여야 함")
         return {}
     return data
 
@@ -91,67 +92,65 @@ def load_manifest(errors: list[str]) -> dict[str, Any]:
 def validate_required_files(errors: list[str]) -> None:
     for rel in sorted(REQUIRED_FILES):
         if not (ROOT / rel).is_file():
-            errors.append(f"required file missing: {rel}")
+            errors.append(f"필수 파일 없음: {rel}")
 
 
 def validate_manifest(data: dict[str, Any], errors: list[str]) -> None:
     if data.get("schema_version") != "1.0":
-        errors.append("schema_version must be 1.0")
+        errors.append("schema_version은 1.0이어야 함")
     if data.get("content_role") != "canonical-public-portfolio-source":
-        errors.append("content_role must be canonical-public-portfolio-source")
+        errors.append("content_role 값이 올바르지 않음")
     if data.get("source_repository") != "tomtomjskim/portfolio":
-        errors.append("source_repository must be tomtomjskim/portfolio")
+        errors.append("source_repository 값이 올바르지 않음")
 
-    projection = data.get("projection_policy")
-    if not isinstance(projection, dict):
-        errors.append("projection_policy must be an object")
+    policy = data.get("projection_policy")
+    if not isinstance(policy, dict):
+        errors.append("projection_policy는 객체여야 함")
     else:
-        if projection.get("requires_exact_source_commit") is not True:
-            errors.append("projection_policy.requires_exact_source_commit must be true")
-        if projection.get("allows_floating_main") is not False:
-            errors.append("projection_policy.allows_floating_main must be false")
-        if projection.get("allows_duplicate_full_case_prose") is not False:
-            errors.append("projection_policy.allows_duplicate_full_case_prose must be false")
+        if policy.get("source_branch") != "main":
+            errors.append("projection_policy.source_branch는 main이어야 함")
+        if policy.get("allows_duplicate_full_case_prose") is not False:
+            errors.append("전체 사례 문장 중복 관리는 허용하지 않음")
 
-    views = data.get("views")
     view_case_refs: list[tuple[str, str, str]] = []
+    views = data.get("views")
     if not isinstance(views, list) or not views:
-        errors.append("views must be a non-empty list")
+        errors.append("views는 비어 있지 않은 목록이어야 함")
     else:
         view_ids: set[str] = set()
         for index, view in enumerate(views):
             prefix = f"views[{index}]"
             if not isinstance(view, dict):
-                errors.append(f"{prefix} must be an object")
+                errors.append(f"{prefix}는 객체여야 함")
                 continue
 
             view_id = view.get("id")
             if not isinstance(view_id, str) or not view_id:
-                errors.append(f"{prefix}.id is required")
+                errors.append(f"{prefix}.id가 필요함")
                 view_id = prefix
             elif view_id in view_ids:
-                errors.append(f"duplicate view id: {view_id}")
+                errors.append(f"중복 view id: {view_id}")
             else:
                 view_ids.add(view_id)
 
             file_name = view.get("file")
             if not isinstance(file_name, str) or not (ROOT / file_name).is_file():
-                errors.append(f"view file missing: {file_name!r}")
+                errors.append(f"view 파일 없음: {file_name!r}")
 
             for field in ("primary_cases", "supporting_cases"):
                 values = view.get(field)
                 if not isinstance(values, list):
-                    errors.append(f"{prefix}.{field} must be a list")
+                    errors.append(f"{prefix}.{field}는 목록이어야 함")
                     continue
                 for value in values:
                     if not isinstance(value, str) or not value:
-                        errors.append(f"{prefix}.{field} contains an invalid case id")
+                        errors.append(f"{prefix}.{field}에 잘못된 case id가 있음")
                     else:
                         view_case_refs.append((str(view_id), field, value))
 
     cases = data.get("cases")
     if not isinstance(cases, list) or not cases:
-        errors.append("cases must be a non-empty list")
+        errors.append("cases는 비어 있지 않은 목록이어야 함")
         return
 
     ids: set[str] = set()
@@ -162,7 +161,7 @@ def validate_manifest(data: dict[str, Any], errors: list[str]) -> None:
     for index, case in enumerate(cases):
         prefix = f"cases[{index}]"
         if not isinstance(case, dict):
-            errors.append(f"{prefix} must be an object")
+            errors.append(f"{prefix}는 객체여야 함")
             continue
 
         case_id = case.get("id")
@@ -174,78 +173,78 @@ def validate_manifest(data: dict[str, Any], errors: list[str]) -> None:
         evidence_refs = case.get("evidence_refs")
 
         if not isinstance(case_id, str) or not case_id:
-            errors.append(f"{prefix}.id is required")
+            errors.append(f"{prefix}.id가 필요함")
         elif case_id in ids:
-            errors.append(f"duplicate case id: {case_id}")
+            errors.append(f"중복 case id: {case_id}")
         else:
             ids.add(case_id)
 
         if not isinstance(slug, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
-            errors.append(f"{prefix}.slug must be kebab-case")
+            errors.append(f"{prefix}.slug는 kebab-case여야 함")
         elif slug in slugs:
-            errors.append(f"duplicate case slug: {slug}")
+            errors.append(f"중복 case slug: {slug}")
         else:
             slugs.add(slug)
 
         if not isinstance(order, int) or order < 1:
-            errors.append(f"{prefix}.order must be a positive integer")
+            errors.append(f"{prefix}.order는 양의 정수여야 함")
         elif order in orders:
-            errors.append(f"duplicate case order: {order}")
+            errors.append(f"중복 case order: {order}")
         else:
             orders.add(order)
 
         if classification not in ALLOWED_CLASSIFICATIONS:
-            errors.append(f"{prefix}.classification is invalid: {classification!r}")
+            errors.append(f"{prefix}.classification 값이 올바르지 않음: {classification!r}")
 
         if not isinstance(case_file, str):
-            errors.append(f"{prefix}.file is required")
+            errors.append(f"{prefix}.file이 필요함")
             continue
 
         path = ROOT / case_file
         if not path.is_file():
-            errors.append(f"case file missing: {case_file}")
+            errors.append(f"case 파일 없음: {case_file}")
             continue
         if path.parent != ROOT / "cases":
-            errors.append(f"case file must be under cases/: {case_file}")
+            errors.append(f"case 파일은 cases/ 아래에 있어야 함: {case_file}")
 
         text = path.read_text(encoding="utf-8")
         last_position = -1
         for heading in REQUIRED_CASE_HEADINGS:
             position = text.find(heading)
             if position == -1:
-                errors.append(f"{case_file}: required heading missing: {heading}")
+                errors.append(f"{case_file}: 필수 제목 없음: {heading}")
             elif position <= last_position:
-                errors.append(f"{case_file}: heading order invalid at {heading}")
+                errors.append(f"{case_file}: 제목 순서 오류: {heading}")
             else:
                 last_position = position
 
         question = case.get("question")
         if not isinstance(question, str) or question not in text:
-            errors.append(f"{case_file}: manifest question is not mirrored in the case file")
+            errors.append(f"{case_file}: manifest 질문이 문서와 일치하지 않음")
 
         if not isinstance(card, dict):
-            errors.append(f"{prefix}.card must be an object")
+            errors.append(f"{prefix}.card는 객체여야 함")
         else:
             for field in ("problem", "decision", "evidence"):
                 value = card.get(field)
                 if not isinstance(value, str) or not value.strip():
-                    errors.append(f"{prefix}.card.{field} is required")
+                    errors.append(f"{prefix}.card.{field}가 필요함")
                 elif value not in text:
-                    errors.append(f"{case_file}: card.{field} does not match manifest")
+                    errors.append(f"{case_file}: card.{field}가 문서와 일치하지 않음")
 
         if not isinstance(evidence_refs, list) or not evidence_refs:
-            errors.append(f"{prefix}.evidence_refs must be a non-empty list")
+            errors.append(f"{prefix}.evidence_refs는 비어 있지 않은 목록이어야 함")
         else:
             for evidence_id in evidence_refs:
                 if not isinstance(evidence_id, str) or evidence_id not in evidence_text:
-                    errors.append(f"{case_file}: evidence ref not found in EVIDENCE.md: {evidence_id!r}")
+                    errors.append(f"{case_file}: EVIDENCE.md에 없는 근거 ID: {evidence_id!r}")
 
     if orders and orders != set(range(1, len(cases) + 1)):
-        errors.append("case orders must be contiguous from 1")
+        errors.append("case order는 1부터 연속이어야 함")
 
     for view_id, field, case_id in view_case_refs:
         if case_id not in ids:
-            errors.append(f"view {view_id}.{field} references unknown case id: {case_id}")
+            errors.append(f"view {view_id}.{field}가 존재하지 않는 case를 참조함: {case_id}")
 
 
 def normalize_link_target(raw: str) -> str:
@@ -267,10 +266,10 @@ def validate_markdown_links(errors: list[str]) -> None:
             try:
                 candidate.relative_to(ROOT)
             except ValueError:
-                errors.append(f"{rel}: link escapes repository: {target}")
+                errors.append(f"{rel}: 저장소 밖으로 나가는 링크: {target}")
                 continue
             if not candidate.exists():
-                errors.append(f"{rel}: broken relative link: {target}")
+                errors.append(f"{rel}: 깨진 상대 링크: {target}")
 
 
 def validate_public_boundary(errors: list[str]) -> None:
@@ -286,10 +285,10 @@ def validate_public_boundary(errors: list[str]) -> None:
             continue
         for literal in FORBIDDEN_LITERALS:
             if literal in text:
-                errors.append(f"{rel}: forbidden public literal found: {literal}")
+                errors.append(f"{rel}: 공개 금지 문자열 발견: {literal}")
         for pattern in SECRET_PATTERNS:
             if pattern.search(text):
-                errors.append(f"{rel}: possible secret pattern found: {pattern.pattern}")
+                errors.append(f"{rel}: credential 의심 패턴 발견: {pattern.pattern}")
 
 
 def main() -> None:
@@ -303,7 +302,7 @@ def main() -> None:
     fail(errors)
 
     cases = data.get("cases", []) if isinstance(data, dict) else []
-    print(f"ok: portfolio source contract passed ({len(cases)} cases)")
+    print(f"확인 완료: 포트폴리오 문서 구조와 공개 범위 통과 ({len(cases)}개 사례)")
 
 
 if __name__ == "__main__":

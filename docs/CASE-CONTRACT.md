@@ -1,110 +1,110 @@
-# Case Authoring Contract
+# 사례 작성 기준
 
-이 문서는 `cases/*.md`의 공통 구조와 공개 Claim 상한을 정의합니다.
+이 문서는 `cases/*.md`의 공통 구성과 공개 주장 범위를 정의합니다.
 
-## Required case grammar
+## 필수 구성
 
-각 Case는 아래 순서를 유지합니다.
+각 사례는 아래 순서를 유지합니다.
 
 ```text
-Question
-→ At a glance
-→ Problem
-→ Context / constraints
-→ Investigation
-→ Decision
-→ Trade-off
-→ Implementation
-→ Verification / actual use
-→ Limitations
-→ Evidence
-→ Interview hooks
+핵심 질문
+→ 한눈에 보기
+→ 문제
+→ 업무 환경과 제약
+→ 확인 과정
+→ 판단
+→ 선택 기준과 대안
+→ 구현
+→ 검증과 실제 사용
+→ 한계
+→ 근거
+→ 면접 예상 질문
 ```
 
-## 15-second card contract
+## 15초 요약 기준
 
-`At a glance`는 다음 세 항목으로 Case를 15초 안에 파악하게 합니다.
+`한눈에 보기`에서는 다음 세 항목으로 사례를 빠르게 파악할 수 있어야 합니다.
 
-| Field | Question answered |
+| 항목 | 답해야 하는 질문 |
 |---|---|
-| Problem | 무엇이 어려웠는가? |
-| Decision | 어떤 기준으로 무엇을 선택했는가? |
-| Evidence | 무엇으로 확인할 수 있는가? |
+| 문제 | 무엇이 어려웠는가? |
+| 판단 | 어떤 기준으로 무엇을 선택했는가? |
+| 근거 | 무엇으로 확인할 수 있는가? |
 
-카드 원문은 [portfolio-manifest.json](../portfolio-manifest.json)이 소유합니다. Case 파일에는 같은 문장을 사람이 읽기 쉬운 표로 투영하며, validator가 두 위치의 일치를 확인합니다.
+요약 문장은 [portfolio-manifest.json](../portfolio-manifest.json)에서 관리하고, 사례 문서에는 같은 내용을 읽기 쉬운 표로 표시합니다. 검증 스크립트가 두 위치의 일치를 확인합니다.
 
-## Case classifications
+## 사례 구분
 
-| Classification | Meaning |
+| 구분 값 | 의미 |
 |---|---|
 | `sanitized-actual-work` | 실제 업무 경험을 공개 가능한 수준으로 비식별화 |
-| `sanitized-actual-work-with-public-rnd-support` | 실제 업무 Case와 별도의 공개 R&D 근거를 함께 사용 |
-| `public-rnd` | 공개 코드·문서·CI로 확인 가능한 현재 Engineering Artifact |
+| `sanitized-actual-work-with-public-rnd-support` | 실제 업무 사례와 별도의 공개 연구·개발 근거를 함께 사용 |
+| `public-rnd` | 공개 코드·문서·CI로 확인 가능한 현재 개발 산출물 |
 
-분류를 변경해 과거 회사의 production source와 공개 R&D를 혼합하지 않습니다.
+분류를 바꿔 과거 회사의 운영 소스와 공개 연구·개발 자료를 섞지 않습니다.
 
-## Required content rules
+## 내용 작성 규칙
 
-### Problem
+### 문제
 
 - 사용자·운영자·개발자가 겪은 실제 문제를 설명
 - 기술을 먼저 제시하지 않음
 - 검증되지 않은 규모·성과 수치 금지
 
-### Context / constraints
+### 업무 환경과 제약
 
 - 기존 환경과 변경 제약
 - 공개할 수 없는 범위
 - 기술·조직·운영 한계
 
-### Investigation
+### 확인 과정
 
 - 어떤 질문으로 문제 범위를 좁혔는지
 - 데이터·상태·권한·외부 시스템을 어떻게 확인했는지
-- source가 없는 세부 구현은 후보로 쓰지 않음
+- 원천 자료가 없는 세부 구현은 후보로 쓰지 않음
 
-### Decision / Trade-off
+### 판단 / 선택 기준과 대안
 
 - 선택한 방식
 - 선택하지 않은 대안
 - 비용·위험·적용 조건
 
-### Implementation
+### 구현
 
 - TOM이 직접 다룬 범위
-- public-safe 구조와 책임
-- 내부 table·endpoint·host·credential·raw log 금지
+- 공개 가능한 구조와 책임
+- 내부 테이블·endpoint·host·credential·원본 로그 금지
 
-### Verification / actual use
+### 검증과 실제 사용
 
 - 코드·DB·테스트·CI·사용자 흐름 중 실제 확인한 범위
-- `not_run`, 수동 확인, private evidence를 성공으로 둔갑시키지 않음
-- PR·CI·test를 release·deployment·adoption·성과 수치로 확대하지 않음
+- `not_run`, 수동 확인, 비공개 근거를 성공으로 둔갑시키지 않음
+- PR·CI·테스트를 배포·운영 반영·외부 채택·성과 수치로 확대하지 않음
 
-### Limitations
+### 한계
 
 - 책임·성숙도·공개 범위의 상한
-- Case 전체를 무력화하는 방어문이 아니라 해석 경계
+- 사례 전체를 무력화하는 방어문이 아니라 해석 경계
 
-### Evidence
+### 근거
 
-- [EVIDENCE.md](../EVIDENCE.md)의 stable Evidence ID 참조
-- 공개 repository 또는 public-safe Case link
-- private source 이름과 내부 경로 금지
+- [EVIDENCE.md](../EVIDENCE.md)의 안정된 근거 ID 참조
+- 공개 저장소 또는 공개 가능한 사례 링크
+- 비공개 원천 이름과 내부 경로 금지
 
-### Interview hooks
+### 면접 예상 질문
 
 - 실제 면접에서 확인될 가능성이 높은 질문
-- 새로운 사실을 만들지 않고 Case의 판단·책임·한계를 점검
+- 새로운 사실을 만들지 않고 사례의 판단·책임·한계를 점검
 
-## No-new-claim rule
+## 새 주장 금지
 
-Case 수정은 다음을 할 수 없습니다.
+사례 수정은 다음을 할 수 없습니다.
 
-- 새로운 Career Fact 생성
-- TOM의 역할을 source보다 강화
+- 새로운 경력 사실 생성
+- TOM의 역할을 원천보다 강화
 - 측정하지 않은 성과 수치 생성
-- public R&D를 employer production work로 변경
-- TODO·계획·prototype을 완료 기능으로 표현
+- 공개 연구·개발 자료를 이전 회사의 운영 업무로 변경
+- 계획·시제품·CI 통과를 완료 기능으로 표현
 
-근거가 부족한 세부는 `현재 공개 근거로는 확인되지 않음` 또는 `protected detail needed`로 남깁니다.
+근거가 부족한 세부는 `현재 공개 근거로는 확인되지 않음` 또는 `추가 원천 확인 필요`로 남깁니다.
