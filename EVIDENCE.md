@@ -19,7 +19,8 @@ Public engineering artifact
 
 - **Type:** sanitized actual-work case
 - **Shows:** PHP/MySQL 커머스·물류 운영 시스템의 상태·권한·관리자·batch/cron·외부 API 변경 영향 분석
-- **Public verification:** [Commerce / Logistics Change Impact](cases/commerce-change-impact.md)
+- **Public representation:** [Commerce / Logistics Change Impact](cases/commerce-change-impact.md)
+- **Evidence strength:** underlying career source is protected and not independently auditable from this public repository
 - **Protected evidence boundary:** 경력 원천과 내부 프로젝트 자료는 비공개
 - **Does not prove:** 전체 commerce architecture ownership, production SLA·트래픽·매출 수치, 모든 transaction/idempotency/reconciliation 구현
 
@@ -28,7 +29,8 @@ Public engineering artifact
 
 - **Type:** sanitized actual-work case
 - **Shows:** 현장 요구를 입력·조회·상태·통계·권한·DB 조건으로 분해하고 도입·지원에서 문제 계층을 구분한 경험
-- **Public verification:** [Manufacturing MES Requirement Modeling](cases/mes-requirement-modeling.md)
+- **Public representation:** [Manufacturing MES Requirement Modeling](cases/mes-requirement-modeling.md)
+- **Evidence strength:** underlying career source is protected and not independently auditable from this public repository
 - **Protected evidence boundary:** 고객사·공장·생산 데이터와 내부 제품 구조는 비공개
 - **Does not prove:** 전체 MES 제품 ownership, 모든 고객사 단독 구축, cloud-native SaaS·SLA 성과
 
@@ -38,7 +40,8 @@ Public engineering artifact
 - **Type:** sanitized actual-use case
 - **Shows:** Python + Ollama/Gemma 3 번역 초안, 별도 PHP 언어팩 생성·JSON 변환, 사람 검수의 책임 분리
 - **Actual use:** 프론트 개발자가 반복 언어팩 작업에 사용
-- **Public verification:** [Practical AI Automation](cases/practical-ai-automation.md)
+- **Public representation:** [Practical AI Automation](cases/practical-ai-automation.md)
+- **Evidence strength:** actual-use statement is source-bounded; implementation source is not public
 - **Protected evidence boundary:** 번역 서버 source와 내부 경로는 비공개
 - **Does not prove:** 번역 정확도·생산성·비용 절감률, GPU/model-serving 운영, 완전 자동 번역
 
