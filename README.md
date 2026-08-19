@@ -1,38 +1,50 @@
 # 김정식 | Backend Engineering Portfolio
 
-PHP/MySQL 기반의 커머스·물류·MES 업무시스템을 개발·운영해 온 백엔드 개발자입니다.
+PHP/MySQL 기반 커머스·물류·MES 업무시스템을 개발·운영해 온 백엔드 개발자입니다.
 
-운영 중인 기능을 변경할 때 **AS-IS 코드와 DB 구조, 상태, 권한, 관리자 흐름, batch/cron, 외부 API의 영향을 먼저 확인해 변경 범위를 정하는 방식**을 중요하게 생각합니다. 최근에는 반복되는 개발·검증 작업에 LLM과 Agent를 적용하되, 모델의 응답보다 실제 코드·테스트·실행 결과와 사람의 최종 판단을 완료 기준으로 사용하고 있습니다.
+기능을 변경할 때 화면이나 단일 함수부터 고치기보다 **AS-IS 코드, DB 상태, 권한, 관리자 흐름, batch/cron, 외부 API가 실제로 연결되는 범위**를 먼저 확인합니다. LLM과 Agent는 분석·구현·검토를 보조하지만, 완료 여부는 코드·테스트·실행 결과와 사람의 판단으로 확인합니다.
 
 ## Start here
 
 - **General Backend:** [PORTFOLIO.md](PORTFOLIO.md)
-- **AI-assisted / AX / Internal Tools:** [PORTFOLIO-AX.md](PORTFOLIO-AX.md)
-- **Public evidence status:** [EVIDENCE.md](EVIDENCE.md)
+- **AI-assisted / Internal Tools:** [PORTFOLIO-AX.md](PORTFOLIO-AX.md)
+- **Evidence status:** [EVIDENCE.md](EVIDENCE.md)
 
 ## Selected case studies
 
-| Case | What it shows |
-|---|---|
-| [Commerce / Logistics Change Impact](cases/commerce-change-impact.md) | 상태·권한·관리자·batch·외부 API를 포함한 변경 영향 분석 |
-| [Manufacturing MES Requirement Modeling](cases/mes-requirement-modeling.md) | 현장 요구를 상태·조회·권한·DB 조건으로 변환하는 방식 |
-| [Practical AI Automation](cases/practical-ai-automation.md) | Local LLM, deterministic code, human validation 책임 분리 |
-| [Developer Internal Tooling](cases/developer-internal-tooling.md) | 반복되는 개발 설정을 검증 가능한 내부도구로 전환한 사례 |
+| Case | Problem | Decision | Evidence |
+|---|---|---|---|
+| [Commerce / Logistics Change Impact](cases/commerce-change-impact.md) | 화면 증상이 DB 상태·관리자·배치·외부 연동까지 이어짐 | UI 수정 전에 상태 변경 주체와 후속 영향을 추적 | 비식별화한 실무 Case와 프로젝트 검수 범위 |
+| [Manufacturing MES Requirement Modeling](cases/mes-requirement-modeling.md) | “화면 변경” 요청이 상태·조회·통계·권한 규칙을 숨김 | 실제 작업 순서를 시스템 조건으로 분해 | 비식별화한 실무 Case와 현장 도입·지원 범위 |
+| [Practical AI Automation](cases/practical-ai-automation.md) | 번역·복사·언어팩 반영이 반복되고 소형 모델에 한계가 있음 | 자연어는 Local LLM, 파일 변환은 일반 코드, 최종 판단은 사람 | 실제 반복 사용한 언어팩 Workflow와 공개 검증 원칙 |
+| [Developer Internal Tooling](cases/developer-internal-tooling.md) | 여러 프로젝트의 AI coding 설정을 복제하면 중복과 drift가 발생 | 반복 비용이 생기는 경계만 typed module과 deterministic build로 공통화 | `harness-kit` 공개 코드와 Node 22/24 검증 Workflow |
 
-## Selected public engineering repositories
+## How to read this repository
 
-- [harness-kit](https://github.com/tomtomjskim/harness-kit) — developer configuration as code, validation, CI
-- [codex-workflow-skills](https://github.com/tomtomjskim/codex-workflow-skills) — intake, independent review, failure accounting, validation
-- [stackforge-atlas](https://github.com/tomtomjskim/stackforge-atlas) — intent → interface → evidence → recovery
+```text
+Career case
+= 실제 경력에서 확인된 문제·판단·업무 범위를 공개 가능한 수준으로 비식별화
 
-## Evidence boundary
+Public engineering artifact
+= 현재 공개 코드와 CI로 확인할 수 있는 설계·구현·검증 방식
+```
 
-이 저장소는 **개인 이직용 공개 포트폴리오**입니다.
+두 종류의 근거를 서로 바꿔 말하지 않습니다. Case 원문은 `cases/`, 공개 근거의 상태와 한계는 [EVIDENCE.md](EVIDENCE.md)에서 확인할 수 있습니다.
 
-- 실제 경력 사례는 공개 가능한 수준으로 비식별화합니다.
-- 공개 R&D 저장소를 이전 회사의 production source로 표현하지 않습니다.
-- PR·CI·test 통과를 release, deployment, external adoption, 생산성 향상으로 확대하지 않습니다.
-- 측정하지 않은 생산성·시간·비용·정확도 수치를 사용하지 않습니다.
-- 비공개 저장소, 고객·주문·결제·배송·생산 데이터, 내부 endpoint·hostname·credential·raw log는 공개하지 않습니다.
+## Selected public engineering
+
+- [stackforge-atlas](https://github.com/tomtomjskim/stackforge-atlas) — intent, interface, evidence, recovery를 연결하는 engineering atlas
+- [harness-kit](https://github.com/tomtomjskim/harness-kit) — AI coding configuration을 모듈과 deterministic build로 관리하는 internal tool
+- [codex-workflow-skills](https://github.com/tomtomjskim/codex-workflow-skills) — intake, independent review, failure accounting, validation을 분리한 Workflow Skills
+- [claude-code-guide](https://github.com/tomtomjskim/claude-code-guide) — Skill·Hook·Agent·Handoff·Failure Recovery 운영 가이드와 템플릿
+
+## Source and projection
+
+이 저장소가 공개 Case의 원문입니다. 향후 `tomtomjskim.github.io`는 이 저장소의 **정확한 commit SHA**를 읽어 정적 화면으로 투영하며, 별도의 경력 사실이나 Case 문장을 소유하지 않습니다.
+
+- Machine-readable source: [portfolio-manifest.json](portfolio-manifest.json)
+- Case authoring contract: [docs/CASE-CONTRACT.md](docs/CASE-CONTRACT.md)
+- Projection contract: [docs/PROJECTION-CONTRACT.md](docs/PROJECTION-CONTRACT.md)
+- Public boundary: [docs/PUBLIC-BOUNDARY.md](docs/PUBLIC-BOUNDARY.md)
 
 GitHub profile: <https://github.com/tomtomjskim>

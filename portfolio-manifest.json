@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "content_role": "canonical-public-portfolio-source",
+  "source_repository": "tomtomjskim/portfolio",
+  "default_branch": "main",
+  "projection_policy": {
+    "requires_exact_source_commit": true,
+    "allows_floating_main": false,
+    "provenance_contract": "docs/PROJECTION-CONTRACT.md",
+    "allows_duplicate_full_case_prose": false
+  },
+  "views": [
+    {
+      "id": "general-backend",
+      "file": "PORTFOLIO.md",
+      "primary_cases": [
+        "commerce-change-impact",
+        "mes-requirement-modeling"
+      ],
+      "supporting_cases": [
+        "practical-ai-automation"
+      ]
+    },
+    {
+      "id": "ai-assisted-internal-tools",
+      "file": "PORTFOLIO-AX.md",
+      "primary_cases": [
+        "practical-ai-automation",
+        "developer-internal-tooling"
+      ],
+      "supporting_cases": [
+        "commerce-change-impact",
+        "mes-requirement-modeling"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "order": 1,
+      "id": "commerce-change-impact",
+      "slug": "commerce-change-impact",
+      "title": "Commerce / Logistics Change Impact",
+      "file": "cases/commerce-change-impact.md",
+      "classification": "sanitized-actual-work",
+      "tracks": [
+        "general-backend",
+        "commerce-logistics"
+      ],
+      "question": "사용자에게 보이는 한 화면의 상태가 DB·관리자·batch·외부 연동에 걸쳐 만들어질 때, 변경 범위를 어떻게 정할 것인가?",
+      "card": {
+        "problem": "화면 증상이 DB 상태·관리자·배치·외부 연동까지 이어짐",
+        "decision": "UI 수정 전에 상태 변경 주체와 후속 영향을 추적",
+        "evidence": "비식별화한 실무 Case와 프로젝트 검수 범위"
+      },
+      "evidence_refs": [
+        "EV-CAREER-COMMERCE"
+      ]
+    },
+    {
+      "order": 2,
+      "id": "mes-requirement-modeling",
+      "slug": "mes-requirement-modeling",
+      "title": "Manufacturing MES Requirement Modeling",
+      "file": "cases/mes-requirement-modeling.md",
+      "classification": "sanitized-actual-work",
+      "tracks": [
+        "general-backend",
+        "mes-internal-systems"
+      ],
+      "question": "“화면을 바꿔 달라”는 현장 요청이 실제로는 입력 순서·상태·조회·통계·권한·DB 관계의 변경일 때, 무엇을 기준으로 시스템 요구사항을 정의할 것인가?",
+      "card": {
+        "problem": "“화면 변경” 요청이 상태·조회·통계·권한 규칙을 숨김",
+        "decision": "실제 작업 순서를 시스템 조건으로 분해",
+        "evidence": "비식별화한 실무 Case와 현장 도입·지원 범위"
+      },
+      "evidence_refs": [
+        "EV-CAREER-MES"
+      ]
+    },
+    {
+      "order": 3,
+      "id": "practical-ai-automation",
+      "slug": "practical-ai-automation",
+      "title": "Practical AI Automation",
+      "file": "cases/practical-ai-automation.md",
+      "classification": "sanitized-actual-work-with-public-rnd-support",
+      "tracks": [
+        "ai-assisted-internal-tools",
+        "general-backend"
+      ],
+      "question": "AI를 사용할 수 있는 업무라고 해서 전부 AI에 맡겨야 하는가? 자연어 처리, 일반 코드, 사람 검수의 책임을 어디서 나눌 것인가?",
+      "card": {
+        "problem": "번역·복사·언어팩 반영이 반복되고 소형 모델에 한계가 있음",
+        "decision": "자연어는 Local LLM, 파일 변환은 일반 코드, 최종 판단은 사람",
+        "evidence": "실제 반복 사용한 언어팩 Workflow와 공개 검증 원칙"
+      },
+      "evidence_refs": [
+        "EV-LOCAL-I18N",
+        "EV-CODEX-WORKFLOW",
+        "EV-STACKFORGE"
+      ]
+    },
+    {
+      "order": 4,
+      "id": "developer-internal-tooling",
+      "slug": "developer-internal-tooling",
+      "title": "Developer Internal Tooling",
+      "file": "cases/developer-internal-tooling.md",
+      "classification": "public-rnd",
+      "tracks": [
+        "ai-assisted-internal-tools",
+        "developer-experience"
+      ],
+      "question": "프로젝트마다 AI coding 설정을 복사하는 편이 더 단순한데, 언제 별도 내부도구를 만들 가치가 생기는가?",
+      "card": {
+        "problem": "여러 프로젝트의 AI coding 설정을 복제하면 중복과 drift가 발생",
+        "decision": "반복 비용이 생기는 경계만 typed module과 deterministic build로 공통화",
+        "evidence": "`harness-kit` 공개 코드와 Node 22/24 검증 Workflow"
+      },
+      "evidence_refs": [
+        "EV-HARNESS-KIT"
+      ]
+    }
+  ]
+}
