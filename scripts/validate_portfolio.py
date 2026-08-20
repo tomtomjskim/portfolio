@@ -35,8 +35,15 @@ REQUIRED_CASE_HEADINGS = [
     "## 검증과 실제 사용",
     "## 한계",
     "## 근거",
-    "## 면접 예상 질문",
 ]
+
+FORBIDDEN_CASE_SECTIONS = {
+    "## 면접 예상 질문",
+    "## 인터뷰 예상 질문",
+    "## Interview Hooks",
+    "## 면접 대응",
+    "## 리허설",
+}
 
 ALLOWED_CLASSIFICATIONS = {
     "sanitized-actual-work",
@@ -208,6 +215,10 @@ def validate_manifest(data: dict[str, Any], errors: list[str]) -> None:
             errors.append(f"case 파일은 cases/ 아래에 있어야 함: {case_file}")
 
         text = path.read_text(encoding="utf-8")
+        for forbidden in sorted(FORBIDDEN_CASE_SECTIONS):
+            if forbidden in text:
+                errors.append(f"{case_file}: 공개 사례에 내부 면접 자료가 포함됨: {forbidden}")
+
         last_position = -1
         for heading in REQUIRED_CASE_HEADINGS:
             position = text.find(heading)
