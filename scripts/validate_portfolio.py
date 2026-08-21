@@ -48,11 +48,14 @@ FORBIDDEN_CASE_SECTIONS = {
 ALLOWED_CLASSIFICATIONS = {
     "sanitized-actual-work",
     "sanitized-actual-work-with-public-rnd-support",
+    "private-personal-product",
     "public-rnd",
 }
 
 FORBIDDEN_LITERALS = {
     "jsnetworkcorp-portfolio",
+    "jsnetworkcorp.com",
+    "tomtomjskim/idea-bank",
     "dna_project",
     "/Users/",
     "/home/",
