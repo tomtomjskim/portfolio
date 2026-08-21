@@ -108,6 +108,10 @@ LLM 점수만으로 아이디어를 자동 승격하지 않았습니다. 사람�
 - 키보드 기반 빠른 분류
 - 거절 결과의 Memory 반영 여부 분리
 
+아래 화면은 실제 UI 코드에 합성 API 응답을 주입해 재현했습니다. 최종 상태 변경은 사용자가 직접 결정합니다.
+
+![합성 데이터로 재현한 아이디어 분류 화면](../assets/cases/idea-workflow-automation/triage.webp)
+
 ### 기획 산출물
 
 ```text
@@ -117,6 +121,8 @@ LLM 점수만으로 아이디어를 자동 승격하지 않았습니다. 사람�
 ```
 
 단계별 결과를 별도 Version으로 저장하고, 보강 단계가 실패하면 초안을 이용해 설계 단계로 진행할 수 있게 했습니다. 최종 문서는 Markdown과 PPTX로 확인할 수 있습니다.
+
+![합성 데이터로 재현한 기획서 버전 관리 화면](../assets/cases/idea-workflow-automation/proposal.webp)
 
 ### LLM 출력 복구
 
