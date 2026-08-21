@@ -25,7 +25,7 @@
       "file": "PORTFOLIO-AX.md",
       "primary_cases": [
         "practical-ai-automation",
-        "developer-internal-tooling"
+        "idea-workflow-automation"
       ],
       "supporting_cases": [
         "commerce-change-impact",
@@ -101,23 +101,24 @@
     },
     {
       "order": 4,
-      "id": "developer-internal-tooling",
-      "slug": "developer-internal-tooling",
-      "title": "개발자 내부 도구",
-      "file": "cases/developer-internal-tooling.md",
-      "classification": "public-rnd",
+      "id": "idea-workflow-automation",
+      "slug": "idea-workflow-automation",
+      "title": "아이디어 발굴·검토·기획 자동화",
+      "file": "cases/idea-workflow-automation.md",
+      "classification": "private-personal-product",
       "tracks": [
         "ai-assisted-internal-tools",
-        "developer-experience"
+        "workflow-automation",
+        "personal-product"
       ],
-      "question": "프로젝트마다 AI 코딩 도구 설정을 복사하는 편이 더 단순한데, 언제 별도 내부 도구를 만들 가치가 생기는가?",
+      "question": "일회성 LLM 브레인스토밍을 반복 가능한 제품 흐름으로 바꾸려면, 무엇을 모델에 맡기고 무엇을 코드·상태·사람 판단으로 고정해야 하는가?",
       "card": {
-        "problem": "여러 프로젝트의 AI 코딩 도구 설정을 복제하면 중복과 설정 불일치가 발생",
-        "decision": "반복 비용이 생기는 경계만 타입이 정의된 모듈과 규칙 기반 생성으로 공통화",
-        "evidence": "`harness-kit` 공개 코드와 Node 22/24 검증 흐름"
+        "problem": "LLM 대화의 아이디어가 세션마다 흩어지고 비교·선택·후속 기획·실패 복구를 일관되게 관리하기 어려움",
+        "decision": "LLM은 리서치·아이디어·문서 초안을 담당하고, 일정·상태·비용·파싱·저장·복구는 코드로 관리하며 최종 선택은 사람이 수행",
+        "evidence": "개인 운영 환경의 실제 사용과 비식별화한 구현·Migration·실패 복구·검증 기록"
       },
       "evidence_refs": [
-        "EV-HARNESS-KIT"
+        "EV-IDEA-BANK"
       ]
     }
   ]
